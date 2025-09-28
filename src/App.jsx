@@ -15,6 +15,7 @@ class App extends Component {
     page: 1,
     loading: false,
     selectedImage: null,
+    totalHits: 0, // добавлено
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -39,9 +40,10 @@ class App extends Component {
       const data = await response.json();
       this.setState((prev) => ({
         images: page === 1 ? data.hits : [...prev.images, ...data.hits],
+        totalHits: data.totalHits, // сохраняем totalHits
       }));
     } catch (error) {
-      console.error("Error fetching images:", error);
+      console.error("Error fetching images", error);
     } finally {
       this.setState({ loading: false });
     }
@@ -53,6 +55,7 @@ class App extends Component {
         query: newQuery,
         page: 1,
         images: [],
+        totalHits: 0, // сбрасываем totalHits при новом поиске
       });
     }
   };
@@ -70,14 +73,16 @@ class App extends Component {
   };
 
   render() {
-    const { images, loading, selectedImage } = this.state;
+    const { images, loading, selectedImage, totalHits } = this.state;
 
     return (
       <div className="App">
         <Searchbar onSubmit={this.handleSearch} />
         <ImageGallery images={images} onImageClick={this.openModal} />
         {loading && <Loader />}
-        {images.length > 0 && !loading && <Button onClick={this.loadMore} />}
+        {images.length > 0 && !loading && images.length < totalHits && (
+          <Button onClick={this.loadMore} />
+        )}
         {selectedImage && (
           <Modal image={selectedImage} onClose={this.closeModal} />
         )}
