@@ -40,7 +40,7 @@ class App extends Component {
       const data = await response.json();
       this.setState((prev) => ({
         images: page === 1 ? data.hits : [...prev.images, ...data.hits],
-        totalHits: data.totalHits, // сохраняем totalHits
+        totalHits: data.totalHits, 
       }));
     } catch (error) {
       console.error("Error fetching images", error);
@@ -55,7 +55,7 @@ class App extends Component {
         query: newQuery,
         page: 1,
         images: [],
-        totalHits: 0, // сбрасываем totalHits при новом поиске
+        totalHits: 0, 
       });
     }
   };
