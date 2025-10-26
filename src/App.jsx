@@ -15,7 +15,7 @@ class App extends Component {
     page: 1,
     loading: false,
     selectedImage: null,
-    totalHits: 0, // добавлено
+    totalHits: 0
   };
 
   componentDidUpdate(prevProps, prevState) {
